@@ -15,6 +15,8 @@ import Stack from '@mui/joy/Stack'
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded'
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded'
 import { useForm } from 'react-hook-form'
+import { useAuth } from 'src/context/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 const ColorSchemeToggle = (props) => {
    const { onClick, ...other } = props
@@ -43,7 +45,7 @@ const ColorSchemeToggle = (props) => {
 const customTheme = extendTheme({ defaultColorScheme: 'dark' })
 
 export default function SignIn() {
-   const [pageToShow, setPageToShow] = useState('signIn1')
+   const [pageToShow, setPageToShow] = useState('signIn')
    const {
       register,
       handleSubmit,
@@ -51,8 +53,17 @@ export default function SignIn() {
       formState: { errors },
    } = useForm()
 
+   const {signIn} = useAuth()
+   const navigate = useNavigate()
+
    const handleFormSubmit = (data) => {
       console.log(data)
+      const correctDetails = true
+
+      if (correctDetails) {
+         signIn()
+         navigate('/inbox')
+      }
    }
 
    return (
@@ -160,7 +171,7 @@ export default function SignIn() {
                      >
                         <FormControl>
                            <FormLabel>Email</FormLabel>
-                           <Input placeholder='example@gmail.com' {...register('email')} type="email" name="email" />
+                           <Input placeholder="example@gmail.com" {...register('email')} type="email" name="email" />
                         </FormControl>
                         <Typography>{errors.email?.message}</Typography>
                         <FormControl>
@@ -169,8 +180,8 @@ export default function SignIn() {
                               {...register('password', {
                                  required: 'password is required*',
                                  minLength: {
-                                    value: 7,
-                                    message: 'password needs to be at least 7 characters',
+                                    value: 4,
+                                    message: 'password needs to be at least 4 characters',
                                  },
                               })}
                               type="password"

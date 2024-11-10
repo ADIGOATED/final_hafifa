@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
@@ -11,7 +11,7 @@ import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import goatImage from '/assets/goat.png'
 import { makeStyles } from '@mui/styles'
 
@@ -36,8 +36,8 @@ const useStyles = makeStyles(() => {
 export default function ResponsiveAppBar() {
    const [anchorElNav, setAnchorElNav] = useState(null)
    const [anchorElUser, setAnchorElUser] = useState(null)
-   const [pressedButton, setPressedButton] = useState('inbox')
-
+   const [pressedButton, setPressedButton] = useState()
+   const location = useLocation()
    const classes = useStyles()
 
    const handleOpenNavMenu = (event) => {
@@ -56,10 +56,11 @@ export default function ResponsiveAppBar() {
       setAnchorElUser(null)
    }
 
-   const handlePageClick = (page) => {
-      setPressedButton(page)
-      console.log(page)
-   }
+   useEffect(() => {
+      const currentPage = location.pathname.split('/')[1]
+      console.log(location.pathname.split('/')[1]);
+      setPressedButton(currentPage)
+   }, [location])
 
    return (
       <AppBar position="sticky">
@@ -133,7 +134,6 @@ export default function ResponsiveAppBar() {
                      <Link key={`/${page}`} to={`/${page}`} className={[classes.disableLinkStyle]}>
                         <Button
                            key={page}
-                           onClick={() => handlePageClick(page)}
                            sx={
                               pressedButton == page
                                  ? { my: 2, color: 'white', display: 'block', fontSize: '1.2rem', fontWeight: 'bold' }
@@ -148,7 +148,7 @@ export default function ResponsiveAppBar() {
                <Box sx={{ flexGrow: 0 }}>
                   <Tooltip title="settings">
                      <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                        <Avatar alt="$emy Sharp" src="/static/images/avatar/2.jpg" />
+                        <Avatar src="/static/images/avatar/2.jpg" />
                      </IconButton>
                   </Tooltip>
                   <Menu

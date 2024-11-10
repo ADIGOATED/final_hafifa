@@ -2,7 +2,7 @@ import React from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { makeStyles } from '@mui/styles'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 const useStyles = makeStyles(() => {
    return {
@@ -37,53 +37,53 @@ const useStyles = makeStyles(() => {
 export default function MessagePreview({ message }) {
    const classes = useStyles()
    const navigate = useNavigate()
+   const location = useLocation()
 
-   /*     const handleEmailClick = () => {
-      console.log(message);
-    navigate(`/Inbox/${message.id}`, {state: {message: message}});
-  }; */
+   const handleEmailClick = () => {
+      navigate(`/${location.pathname.split('/')[1]}/${message.id}`, { state: { message: message } })
+   }
 
+   {
+      /* get the msg id from url and query so that "open link in a new tab works" */
+   }
    return (
-      // get the msg id from url and query so that "open link in a new tab works"
-      <Link to={`/Inbox/${message.id}`} state={{ message: message }} className={classes.disableLinkStyle}>
-         <Box /* onClick={handleEmailClick} */ className={classes.messageDimensions}>
+      <Box onClick={handleEmailClick} className={classes.messageDimensions}>
+         <Typography
+            className={classes.overflow}
+            sx={{
+               width: '15vw',
+               fontWeight: 'bold',
+               marginLeft: '5%',
+               marginRight: '2%',
+            }}
+         >
+            {message.sender_fname} {message.sender_lname}
+         </Typography>
+
+         <Box sx={{ width: '60vw', display: 'flex', alignItems: 'center' }}>
             <Typography
-               className={classes.overflow}
                sx={{
-                  width: '15vw',
                   fontWeight: 'bold',
-                  marginLeft: '5%',
-                  marginRight: '2%',
+                  marginRight: '1%',
+                  whiteSpace: 'nowrap',
                }}
             >
-               {message.sender_fname} {message.sender_lname}
+               {message.title} -
             </Typography>
-
-            <Box sx={{ width: '60vw', display: 'flex', alignItems: 'center' }}>
-               <Typography
-                  sx={{
-                     fontWeight: 'bold',
-                     marginRight: '1%',
-                     whiteSpace: 'nowrap',
-                  }}
-               >
-                  {message.title} -
-               </Typography>
-               <Typography className={classes.overflow} sx={{ marginRight: '10%' }}>
-                  {message.text}
-               </Typography>
-            </Box>
-
-            <Typography
-               className={classes.overflow}
-               sx={{
-                  width: '10vw',
-                  marginRight: '2%',
-               }}
-            >
-               {message.createdAt}
+            <Typography className={classes.overflow} sx={{ marginRight: '10%' }}>
+               {message.text}
             </Typography>
          </Box>
-      </Link>
+
+         <Typography
+            className={classes.overflow}
+            sx={{
+               width: '10vw',
+               marginRight: '2%',
+            }}
+         >
+            {message.createdAt}
+         </Typography>
+      </Box>
    )
 }

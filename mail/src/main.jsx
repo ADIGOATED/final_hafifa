@@ -2,13 +2,14 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
-import Inbox from './pages/Inbox/Inbox.jsx'
-import Outbox from './pages/outbox/Outbox.jsx'
-import RouteError from './pages/routeError/RouteError.jsx'
-import { Message } from './pages/message/Message.jsx'
-import Layout from './layout/Layout'
-import SignIn from './pages/signIn/SignIn'
-
+import Inbox from 'src/pages/inbox/Inbox'
+import Outbox from 'src/pages/outbox/Outbox'
+import RouteError from 'src/pages/routeError/RouteError'
+import { Message } from 'src/pages/message/Message'
+import Layout from 'src/layout/Layout'
+import SignIn from 'src/pages/signIn/SignIn'
+import { AuthProvider } from 'src/context/AuthContext' // import the AuthProvider
+import PrivateRoute from 'src/components/PrivateRoutes/PrivateRoutes'
 
 const router = createBrowserRouter([
    {
@@ -16,31 +17,38 @@ const router = createBrowserRouter([
       element: <Layout />,
       children: [
          {
-            path: 'Inbox',
-            element: <Inbox />,
+            path: 'inbox',
+            element: <PrivateRoute element={<Inbox />} />,
             errorElement: <RouteError />,
          },
          {
-            path: 'Outbox',
-            element: <Outbox />,
+            path: 'outbox',
+            element: <PrivateRoute element={<Outbox />} />,
          },
          {
-            path: 'Inbox/:messageId',
-            element: <Message />,
+            path: 'inbox/:messageId',
+            element: <PrivateRoute element={<Message />} />,
             errorElement: <RouteError />,
          },
          {
-          path: 'SignIn',
-          element: <SignIn />,
-          errorElement: <RouteError />,
-       },
+            path: 'outbox/:messageId',
+            element: <PrivateRoute element={<Message />} />,
+            errorElement: <RouteError />,
+         },
+         {
+            path: 'signIn',
+            element: <SignIn />,
+            errorElement: <RouteError />,
+         },
       ],
    },
 ])
 
 ReactDOM.render(
    <React.StrictMode>
-      <RouterProvider router={router} />
+      <AuthProvider>
+         <RouterProvider router={router} />
+      </AuthProvider>
    </React.StrictMode>,
    document.getElementById('root')
 )
