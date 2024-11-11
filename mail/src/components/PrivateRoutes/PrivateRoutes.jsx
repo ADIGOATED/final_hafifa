@@ -13,7 +13,7 @@ const PrivateRoute = ({ element }) => {
    }, [isAuthenticated, navigate])
 
    if (!isAuthenticated) {
-      return null // Avoid rendering the protected component if not authenticated
+      return null
    }
 
    return element

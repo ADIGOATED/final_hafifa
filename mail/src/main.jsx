@@ -8,7 +8,7 @@ import RouteError from 'src/pages/routeError/RouteError'
 import { Message } from 'src/pages/message/Message'
 import Layout from 'src/layout/Layout'
 import SignIn from 'src/pages/signIn/SignIn'
-import { AuthProvider } from 'src/context/AuthContext' // import the AuthProvider
+import { AuthProvider } from 'src/context/AuthContext'
 import PrivateRoute from 'src/components/PrivateRoutes/PrivateRoutes'
 
 const router = createBrowserRouter([
@@ -38,6 +38,11 @@ const router = createBrowserRouter([
          {
             path: 'signIn',
             element: <SignIn />,
+            errorElement: <RouteError />,
+         },
+         {
+            path: 'signUp',
+            element: <SignIn page='signUp' />,
             errorElement: <RouteError />,
          },
       ],

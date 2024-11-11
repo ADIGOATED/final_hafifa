@@ -44,8 +44,8 @@ const ColorSchemeToggle = (props) => {
 
 const customTheme = extendTheme({ defaultColorScheme: 'dark' })
 
-export default function SignIn() {
-   const [pageToShow, setPageToShow] = useState('signIn')
+export default function SignIn({ page = 'signIn' }) {
+   const [currentPage, setCurrentPage] = useState(page)
    const {
       register,
       handleSubmit,
@@ -53,7 +53,7 @@ export default function SignIn() {
       formState: { errors },
    } = useForm()
 
-   const {signIn} = useAuth()
+   const { signIn } = useAuth()
    const navigate = useNavigate()
 
    const handleFormSubmit = (data) => {
@@ -131,17 +131,22 @@ export default function SignIn() {
                   <Stack sx={{ gap: 4, mb: 2 }}>
                      <Stack sx={{ gap: 1 }}>
                         <Typography component="h1" level="h3">
-                           {pageToShow === 'signIn' ? 'Sign in' : 'Sign up'}
+                           {currentPage === 'signIn' ? 'Sign in' : 'Sign up'}
                         </Typography>
                         <Typography level="body-sm">
-                           {pageToShow === 'signIn' ? 'New to GoatMail?' : 'Already has an account?'}{' '}
+                           {currentPage === 'signIn' ? 'New to GoatMail?' : 'Already has an account?'}{' '}
                            <Link
                               onClick={() => {
-                                 console.log(pageToShow === 'signIn')
-                                 pageToShow === 'signIn' ? setPageToShow('signUp') : setPageToShow('signIn')
+                                 if (currentPage === 'signIn') {
+                                    setCurrentPage('signUp')
+                                    navigate('/signUp')
+                                 } else {
+                                    setCurrentPage('signIn')
+                                    navigate('/signIn')
+                                 }
                               }}
                            >
-                              {pageToShow === 'signIn' ? 'Sign up!' : 'Sign in!'}
+                              {currentPage === 'signIn' ? 'Sign up!' : 'Sign in!'}
                            </Link>
                         </Typography>
                      </Stack>
@@ -189,7 +194,7 @@ export default function SignIn() {
                            />
                         </FormControl>
                         <Typography>{errors.password?.message}</Typography>
-                        {pageToShow !== 'signIn' && (
+                        {currentPage !== 'signIn' && (
                            <>
                               <FormControl>
                                  <FormLabel>first name</FormLabel>
@@ -223,7 +228,7 @@ export default function SignIn() {
                         )}
                         <Stack sx={{ gap: 4, mt: 2 }}>
                            <Button type="submit" fullWidth>
-                              {pageToShow === 'signIn' ? 'Sign in' : 'Sign up'}
+                              {currentPage === 'signIn' ? 'Sign in' : 'Sign up'}
                            </Button>
                         </Stack>
                      </form>
