@@ -7,22 +7,6 @@ import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 
-/* const message = {
-  id: "63d1c1b7d481b024dd0e89016",
-  text: "Looking forward to seeing everyone!",
-  title: "Excitement for Event",
-  sender_fname: "Charlie",
-  sender_lname: "Davis",
-  sender_mail: "charlie.davis@example.com",
-  recipient_fname: "Bob",
-  recipient_lname: "Brown",
-  recipient_mail: "bob.brown@example.com",
-  createdAt: "2024-11-01T13:20:00Z",
-  read: false,
-
-
-}; */
-
 const TITLE_MIN_LENGTH = 3
 
 const Message = () => {
@@ -37,23 +21,21 @@ const Message = () => {
    const message = state.message
 
    const onSubmit = (data) => {
-      console.log(
-         `this reply sent by ${message.recipient_mail} to ${message.sender_mail} ${(data.title, data.text)}`
-      )
+      console.log(`this reply sent by ${message.recipient.mail} to ${message.sender.mail} ${(data.title, data.text)}`)
    }
    console.log(errors)
 
    return (
       <>
          <Typography variant="h4" textAlign={'center'} marginTop={5} marginBottom={2}>
-            from- {message.sender_fname} {message.sender_lname}
+            from- {message.sender.fname} {message.sender.lname}
          </Typography>
 
          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '7vh' }}>
             <Card sx={{ width: '90vw' }}>
                <CardContent>
                   <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-                     {message.sender_mail}
+                     {message.sender.mail}
                   </Typography>
                   <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
                      {message.createdAt}
@@ -68,7 +50,7 @@ const Message = () => {
                      onClick={() => setShowReplySection(true)}
                      endIcon={<ReplyIcon sx={{ transform: 'scaleX(-1)', marginBottom: 0.5 }}></ReplyIcon>}
                   >
-                     reply to {message.sender_fname}
+                     reply to {message.sender.fname}
                   </Button>
                </CardActions>
             </Card>
@@ -85,7 +67,7 @@ const Message = () => {
                <form onSubmit={handleSubmit(onSubmit)}>
                   <CardContent>
                      <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-                        to- {message.sender_mail}
+                        to- {message.sender.mail}
                      </Typography>
                      <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <TextField
@@ -96,7 +78,7 @@ const Message = () => {
                                  message: `title needs to be at least ${TITLE_MIN_LENGTH} characters`,
                               },
                            })}
-                           sx={{ width: '30vw'}}
+                           sx={{ width: '30vw' }}
                            label="Title"
                            multiline
                            maxRows={4}
@@ -112,9 +94,7 @@ const Message = () => {
                            multiline
                            rows={7}
                         />
-                        <Typography marginTop={1.5}>
-                           {errors.text?.message}
-                        </Typography>
+                        <Typography marginTop={1.5}>{errors.text?.message}</Typography>
                      </div>
                   </CardContent>
                   <CardActions>
@@ -125,8 +105,6 @@ const Message = () => {
                </form>
             </Card>
          </div>
-
-         
       </>
    )
 }

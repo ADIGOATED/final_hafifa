@@ -4,7 +4,6 @@ from mongoengine import (Document, StringField, ReferenceField, BooleanField)
 from .user import User
 
 
-
 # mongoengine
 class Message(Document):
     text = StringField(required=True, max_length=5000)
@@ -22,7 +21,26 @@ class Message(Document):
 class ApiMessage(BaseModel):
     text: str
     title: str
-    sender: str #UUID
-    recipient: str #EmailStr
-    read: bool
+    sender: str  # UUID
+    recipient: str  # EmailStr
 
+
+# class ApiFullMessage(ApiMessage):
+#     text: str
+#     title: str
+#     id: str
+#     sender_fname: str
+#     sender_lname: str
+#     sender_mail: str
+#     recipient_fname: str
+#     recipient_lname: str
+#     recipient_mail: str
+#     createdAt: str
+#     read: bool
+#
+#     class Config:
+#         orm_mode = True
+#
+#
+# class ApiMessages(BaseModel):
+#     result: list[ApiFullMessage]

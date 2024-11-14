@@ -8,13 +8,16 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [connectedUserId, setConnectedUserId] = useState();
 
   const signIn = () => setIsAuthenticated(true);
 
   const signOut = () => setIsAuthenticated(false);
 
+  const updateConnectedUser = (userId) => setConnectedUserId(userId)
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, signIn, signOut }}>
+    <AuthContext.Provider value={{ isAuthenticated, signIn, signOut, updateConnectedUser, connectedUserId }}>
       {children}
     </AuthContext.Provider>
   );

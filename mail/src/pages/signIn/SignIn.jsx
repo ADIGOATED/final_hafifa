@@ -17,6 +17,7 @@ import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded'
 import { useForm } from 'react-hook-form'
 import { useAuth } from 'src/context/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import UserApi from 'src/api/userApi'
 
 const ColorSchemeToggle = (props) => {
    const { onClick, ...other } = props
@@ -53,16 +54,25 @@ export default function SignIn({ page = 'signIn' }) {
       formState: { errors },
    } = useForm()
 
-   const { signIn } = useAuth()
+   const { signIn, updateConnectedUser } = useAuth()
    const navigate = useNavigate()
 
-   const handleFormSubmit = (data) => {
-      console.log(data)
-      const correctDetails = true
+   const handleFormSubmit = async (data) => {
+      let userDetails = {};
 
-      if (correctDetails) {
+      if (currentPage === 'signIn') {
+         userDetails = await UserApi.signIn(data)
+      } else {
+         userDetails = await UserApi.signUp(data)
+      }
+
+      if (userDetails.authorize) {
+         console.log(userDetails.id);
+         updateConnectedUser(userDetails.id)
          signIn()
          navigate('/inbox')
+      } else {
+         alert('wrong credentials')
       }
    }
 
@@ -176,9 +186,14 @@ export default function SignIn({ page = 'signIn' }) {
                      >
                         <FormControl>
                            <FormLabel>Email</FormLabel>
-                           <Input placeholder="example@gmail.com" {...register('email')} type="email" name="email" />
+                           <Input
+                              placeholder="example@gmail.com"
+                              {...register('mail', { required: 'email is required*' })}
+                              type="email"
+                              name="mail"
+                           />
                         </FormControl>
-                        <Typography>{errors.email?.message}</Typography>
+                        <Typography>{errors.mail?.message}</Typography>
                         <FormControl>
                            <FormLabel>Password</FormLabel>
                            <Input

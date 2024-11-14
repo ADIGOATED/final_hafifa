@@ -21,3 +21,15 @@ class ApiUser(BaseModel):
     lname: str
     mail: str  # EmailStr
     password: str
+
+
+class ApiSignIn(BaseModel):
+    mail: str  # EmailStr
+    password: str
+
+
+class ApiSignUp(BaseModel):
+    mail: str  # EmailStr
+    password: str
+    fname: str
+    lname: str

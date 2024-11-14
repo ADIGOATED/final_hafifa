@@ -57,7 +57,7 @@ export default function MessagePreview({ message }) {
                marginRight: '2%',
             }}
          >
-            {message.sender_fname} {message.sender_lname}
+            {message.sender.fname} {message.sender.lname}
          </Typography>
 
          <Box sx={{ width: '60vw', display: 'flex', alignItems: 'center' }}>

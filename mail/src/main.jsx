@@ -10,12 +10,17 @@ import Layout from 'src/layout/Layout'
 import SignIn from 'src/pages/signIn/SignIn'
 import { AuthProvider } from 'src/context/AuthContext'
 import PrivateRoute from 'src/components/PrivateRoutes/PrivateRoutes'
+import { Navigate } from 'react-router-dom'
 
 const router = createBrowserRouter([
    {
       path: '/',
       element: <Layout />,
       children: [
+         {
+            path: '/',
+            element: <Navigate to="/signIn" replace />, 
+         },
          {
             path: 'inbox',
             element: <PrivateRoute element={<Inbox />} />,

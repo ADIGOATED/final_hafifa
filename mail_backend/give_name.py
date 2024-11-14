@@ -1,6 +1,12 @@
-def message_to_dict(obj) -> dict:
+def to_dict(obj) -> dict:
     data: dict = dict(obj.to_mongo())  # Converts to dict
     data["id"] = str(data.pop("_id"))  # Rename `_id` to `id` and convert ObjectId to string
+
+    return data
+
+
+def message_to_dict(obj) -> dict:
+    data = to_dict(obj)
 
     if hasattr(obj, 'sender') and obj.sender is not None:
         data["sender"] = str(data.pop("sender"))
@@ -9,6 +15,7 @@ def message_to_dict(obj) -> dict:
         data["recipient"] = str(data.pop("recipient"))
 
     return data
+
 
 
 def serialize_user(user):
